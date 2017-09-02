@@ -44,7 +44,7 @@ body {
 .username {
     text-align:center;
     height: 90px;
-    line-height: 90px;
+    line-height: 105px;
 }
 .top_menu .buttons .button {
   width: 16px;
@@ -231,4 +231,31 @@ body {
 
 .message_template {
   display: none;
+}
+
+.btn-group {
+  position: absolute;
+  float: right;
+  margin-right: 10%;
+}
+
+
+.btn-group .dropdown-menu a{
+    color:#000;
+}
+
+.btn-default .dropdown-menu {
+  color: #000 !important;
+}
+.btn-default .dropdown-menu li > a:hover,
+.btn-default .dropdown-menu li > a:focus {
+  background-color: #000 !important;
+  color:#fff !important;
+}
+.btn-group-primary .dropdown-menu {
+  background-color: #3784c5 !important;
+}
+.btn-group-primary .dropdown-menu li > a:hover,
+.btn-group-primary .dropdown-menu li > a:focus {
+  background-color: #428bca !important;
 }

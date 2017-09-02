@@ -5,11 +5,13 @@
   <meta charset="utf-8">
   <title>chatterbox</title>
   <link rel="stylesheet" href="styles/styles.css">
-
+  <link rel="stylesheet" href="styles/bootstrap.min.css">
   <!-- dependencies -->
   <script src="bower_components/jquery/dist/jquery.js"></script>
   <script src="bower_components/underscore/underscore.js"></script>
   <script src="bower_components/backbone/backbone.js"></script>
+  
+  
 
   <script>
     // YOU DO NOT NEED TO EDIT THIS CODE
@@ -20,22 +22,30 @@
       }
       newSearch += 'username=' + (prompt('What is your name?') || 'anonymous');
       window.location.search = newSearch;
-    }
-  </script>
-  <!-- your scripts -->
-  <script src="env/config.js"></script>
-  <script src="scripts/app.js"></script>
+  }
+</script>
+<!-- your scripts -->
+<script src="env/config.js"></script>
+<script src="scripts/app.js"></script>
 </head>
 
 <body>
+  <!-- Drop Down menu full of chat rooms available -->
   <div class="chat_window">
     <div class="top_menu">
+      <div class="btn-group">
+        <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Rooms
+      </button>
+        <div class="dropdown-menu">
+        </div>
+      </div>
       <div class="buttons">
         <div class="button close"></div>
         <div class="button minimize"></div>
         <div class="button maximize"></div>
       </div>
-      <div class="title">Chat</div>
+      <div class="title">All Chats</div>
     </div>
     <ul class="messages"></ul>
     <div class="bottom_wrapper">
@@ -51,7 +61,7 @@
   <div class="message_template">
     <li class="message">
       <div class="avatar">
-          <div class="username wordwrap"></div>
+        <div class="username wordwrap"></div>
       </div>
       <div class="text_wrapper">
         <div class="text"></div>
@@ -60,5 +70,10 @@
   </div>
   <div id="chats">
   </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+    crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js" integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
+    crossorigin="anonymous"></script>
 </body>
+
 </html>
