@@ -32,6 +32,20 @@ body {
   margin: 3px 0 0 20px;
   position: absolute;
 }
+
+.wordwrap { 
+   white-space: pre-wrap;      /* CSS3 */   
+   white-space: -moz-pre-wrap; /* Firefox */    
+   white-space: -pre-wrap;     /* Opera <7 */   
+   white-space: -o-pre-wrap;   /* Opera 7 */        /* IE */
+   word-break:break-all;
+}
+
+.username {
+    text-align:center;
+    height: 90px;
+    line-height: 90px;
+}
 .top_menu .buttons .button {
   width: 16px;
   height: 16px;

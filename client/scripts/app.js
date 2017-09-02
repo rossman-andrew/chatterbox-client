@@ -2,10 +2,12 @@
 class Application{
 
 //intitalizer
-constructor(url) {
+constructor(url, username) {
+    //this.username = getUrlVars();
+    this.username;
     this.lastMessagetime = new Date().getTime(); //Date object of last message added
     this.server = url;
-    console.log(this.unicodeToChar('U+1F601'));
+    this.getUrlVars();
 }
 
 init() {
@@ -35,7 +37,7 @@ fetch() {
                 //Compare the time of the message,
                 var messageTime = Date.parse(msg.createdAt);
                 var username = msg.username;
-                if(messageTime > app.lastMessagetime){
+                if(messageTime > app.lastMessagetime && app.username !== msg.username){
                     receiveMessage(msg.text, username);
                     app.lastMessagetime = messageTime; //Date object
                 }
@@ -70,8 +72,20 @@ send(message) {
     });
 }
 
+//Get the username from the url 
+getUrlVars() {
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for (var i = 0; i < hashes.length; i++) {
+        hash = hashes[i].split('=');
+        vars.push(hash[0]);
+        vars[hash[0]] = hash[1];
+    }
+    this.username =  vars["username"];
+}
+
 //Clear the messages from the dom
-clearMessages(){
+clearMessages() {
     $('#chats').empty();
 }
 
@@ -94,19 +108,20 @@ renderRoom(){
 }
 
 const app = new Application("http://parse.sfm8.hackreactor.com/chatterbox/classes/messages");
+console.log(app);
 
 
 (function () {
     var Message;
     Message = function (arg) {
-        this.text = arg.text, this.message_side = arg.message_side;
-        this.username = arg.username;
+        this.text = arg.text, this.message_side = arg.message_side, this.username = arg.username;
         this.draw = function (_this) {
             return function () {
                 var $message;
                 $message = $($('.message_template').clone().html());
                 $message.addClass(_this.message_side).find('.text').html(_this.text);
-                $message.find('.username').html(username);
+                console.log(this.username);
+                $message.find('.username').html(this.username);
                 $('.messages').append($message);
                 
                 return setTimeout(function () {
@@ -153,13 +168,14 @@ const app = new Application("http://parse.sfm8.hackreactor.com/chatterbox/classe
             message_side = 'right';
             message = new Message({
                 text: text,
-                message_side: message_side
-            }); 
+                message_side: message_side,
+                username: app.username
+            });
             message.draw();
 
             //Create message object
             var userMessage = {
-                username: 'ADRIAN & ANDREW',
+                username: app.username,
                 text: text,
                 roomname: 'BOSSES'
             }
@@ -168,9 +184,11 @@ const app = new Application("http://parse.sfm8.hackreactor.com/chatterbox/classe
             return $messages.animate({ scrollTop: $messages.prop('scrollHeight') }, 300);
         };
         
+        //Call the fetch function every 5 seconds
         setInterval(function() {
             app.fetch();
         }, 5000);
+
 
         $('.send_message').click(function (e) {
             return sendMessage(getMessageText());
