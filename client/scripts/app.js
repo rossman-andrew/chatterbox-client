@@ -5,6 +5,7 @@ class Application{
 constructor(url) {
     this.lastMessagetime = new Date().getTime(); //Date object of last message added
     this.server = url;
+    console.log(this.unicodeToChar('U+1F601'));
 }
 
 init() {
@@ -33,8 +34,9 @@ fetch() {
             for (var msg of results) {
                 //Compare the time of the message,
                 var messageTime = Date.parse(msg.createdAt);
+                var username = msg.username;
                 if(messageTime > app.lastMessagetime){
-                    receiveMessage(msg.text);
+                    receiveMessage(msg.text, username);
                     app.lastMessagetime = messageTime; //Date object
                 }
                 
@@ -73,6 +75,13 @@ clearMessages(){
     $('#chats').empty();
 }
 
+unicodeToChar(text) {
+   return text.replace(/\\u[\dA-F]{4}/gi, 
+          function (match) {
+               return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
+          });
+}
+
 renderMessage(){
     var text = escapehtml(text);
     $("#chats").append("<p> ($message['username']): ($message[text]) </p>");
@@ -91,12 +100,15 @@ const app = new Application("http://parse.sfm8.hackreactor.com/chatterbox/classe
     var Message;
     Message = function (arg) {
         this.text = arg.text, this.message_side = arg.message_side;
+        this.username = arg.username;
         this.draw = function (_this) {
             return function () {
                 var $message;
                 $message = $($('.message_template').clone().html());
                 $message.addClass(_this.message_side).find('.text').html(_this.text);
+                $message.find('.username').html(username);
                 $('.messages').append($message);
+                
                 return setTimeout(function () {
                     return $message.addClass('appeared');
                 }, 0);
@@ -112,7 +124,7 @@ const app = new Application("http://parse.sfm8.hackreactor.com/chatterbox/classe
             $message_input = $('.message_input');
             return $message_input.val();
         };
-        receiveMessage = function(text) {
+        receiveMessage = function(text, username) {
             console.log('receive was called');
             var $messages, message;
             if (text.trim() === '') {
@@ -123,7 +135,8 @@ const app = new Application("http://parse.sfm8.hackreactor.com/chatterbox/classe
             message_side = 'left';
             message = new Message({
                 text: text,
-                message_side: message_side
+                message_side: message_side,
+                username: username
             }); 
             message.draw();
 
